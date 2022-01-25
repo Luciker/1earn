@@ -6,7 +6,7 @@
 
 ---
 
-# 激活
+## 激活
 
 > 注意 : Windows 系统和 Microsoft Office 软件都必须是 VOL 版本.
 
@@ -64,7 +64,7 @@ CSCRIPT OSPP.VBS /DSTATUS
 
 ---
 
-# DNS
+## DNS
 
 **快速刷新 DNS 缓存**
 ```
@@ -97,8 +97,8 @@ ipconfig /flushdns
 
 ---
 
-# 各种代理/源
-## Git
+## 各种代理/源
+### Git
 
 <p align="center">
     <img src="../../assets/img/logo/git.svg" width="15%">
@@ -118,7 +118,7 @@ git config --global --unset http.proxy
 git config --global --unset https.proxy
 ```
 
-## Homebrew
+### Homebrew
 
 ```bash
 # brew 程序本身
@@ -134,7 +134,7 @@ git -C "$(brew --repo homebrew/cask-drivers)" remote set-url origin https://mirr
 brew update
 ```
 
-## Docker
+### Docker
 
 <p align="center">
     <img src="../../assets/img/logo/Docker.png" width="20%">
@@ -170,7 +170,7 @@ Windows 安装文件:http://mirrors.aliyun.com/docker-toolbox/windows/docker-for
 }
 编辑完成后点击 Apply 保存按钮,等待 Docker 重启并应用配置的镜像加速器.
 
-## node&js
+### node&js
 
 <p align="center">
     <img src="../../assets/img/logo/npm&Node.png" width="25%">
@@ -186,7 +186,7 @@ npm config set proxy=http://127.0.0.1:8087
 npm config delete proxy  # 取消代理
 ```
 
-## pip
+### pip
 
 常用的国内镜像包括:
 
@@ -223,7 +223,7 @@ npm config delete proxy  # 取消代理
         trusted-host = https://pypi.tuna.tsinghua.edu.cn
         ```
 
-## 终端
+### 终端
 
 <p align="center">
     <img src="../../assets/img/logo/terminal.svg" width="15%">
@@ -254,7 +254,7 @@ npm config delete proxy  # 取消代理
 
             如果嫌每次命令前加上 proxychain4 麻烦,可以 `proxychains4 bash` 这样 DLL 注入的 bash 里的命令都会走代理.
 
-## GO
+### GO
 
 **goproxy**
 
@@ -287,7 +287,7 @@ npm config delete proxy  # 取消代理
 
 ---
 
-# vscode
+## vscode
 
 <p align="center">
     <img src="../../assets/img/logo/vscode.svg" width="15%">
@@ -295,13 +295,17 @@ npm config delete proxy  # 取消代理
 
 `谁和我一起吹 vscode 我们就是永远的好朋友🤞`
 
+**Font**
+- https://github.com/tonsky/FiraCode
+- https://github.com/adobe-fonts/source-code-pro
+
 **配置**
 ```yml
 "editor.fontFamily": "Fira Code Retina",
 "editor.fontLigatures": true
 ```
 
-**插件**
+**Extensions**
 - [Bracket Pair Colorizer 2](https://marketplace.visualstudio.com/items?itemName=CoenraadS.bracket-pair-colorizer-2)
 - [Chinese (Simplified)](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-zh-hans)
 - [GitLens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
@@ -315,7 +319,14 @@ npm config delete proxy  # 取消代理
 
 ---
 
-# ffmpeg
+## notepad++
+
+**Theme**
+- https://github.com/chriskempson/tomorrow-theme/tree/master/notepad%2B%2B
+
+---
+
+## ffmpeg
 
 <p align="center">
     <img src="../../assets/img/logo/ffmpeg.png" width="15%">
@@ -346,6 +357,11 @@ filelist.txt
 ffmpeg -f concat -i filelist.txt -c copy output.mkv
 ```
 
+**TS 格式转 MP4 格式**
+```bash
+ffmpeg -i target.ts -c:v libx264 -c:a copy -bsf:a aac_adtstoasc output.mp4
+```
+
 **视频压缩**
 
 常规用法
@@ -353,7 +369,7 @@ ffmpeg -f concat -i filelist.txt -c copy output.mkv
 ffmpeg.exe -i in.mp4 -r 10 -b:a 32k out.mp4
 ```
 
-推荐用法
+其他用法
 ```bash
 ffmpeg -y -i /mnt/sdcard/demo1.mp4 -strict -2 -vcodec libx264 -preset ultrafast -crf 24 -acodec aac -ar 44100 -ac 2 -b:a 96k -s 360x640 -aspect 16:9 /mnt/sdcard/democompress.mp4
 ```
@@ -381,12 +397,12 @@ ffmpeg -y -i in.out -vcodec xvid -s 176x144 -r 29.97 -b 1500 -acodec aac -ac 2 -
 # -acodec aac 音频编码用 AAC
 # -ac 2 声道数 1 或 2
 # -ar 48000 声音的采样频率
-# -ab 128 音频数据流量, 一般选择 32、64、96、128 # -vol 200 200% 的音量, 可更改 (如果源文件声音很小, 可以提升 10 到 20 倍 (1000%~2000%), 我试过, 效果还行! 但不能太大, 200000% 我也试验过, 但嘈杂声太大了)
+# -ab 128 音频数据流量, 一般选择 32、64、96、128 # -vol 200 200% 的音量, 可更改 (如果源文件声音很小, 可以提升 10 到 20 倍 (1000%~2000%))
 ```
 
 ---
 
-# Jetbrains
+## Jetbrains
 
 **datagrip 离线安装驱动 jar**
 
@@ -396,8 +412,16 @@ ffmpeg -y -i in.out -vcodec xvid -s 176x144 -r 29.97 -b 1500 -acodec aac -ac 2 -
 
 ---
 
-# win10
+## win10
 
 **关闭晃动窗口最小化**
 
 运行 gpedit.msc 打开组策略编辑器，展开 用户配置 -> 管理模版 -> 桌面，可以在右边区域找到 “关闭 Aero Shake 窗口最小化鼠标手势” 的项目，它的默认状态为 “未配置”，在未配置的情况下，Aero Shake 的功能是默认开启的, 设置为“已启用” 即可
+
+**audiodg 无响应**
+
+```
+psexec.exe -accepteula -s -i -d cmd.exe
+net stop audiosrv
+net start audiosrv
+```

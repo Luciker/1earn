@@ -140,9 +140,11 @@ bash xxx.sh								# 运行 xxx.sh 脚本
 ```bash
 set
 env
+printenv
 
 cat /proc/1/environ
 cat /proc/$PID/environ
+cat /proc/self/environ
 ```
 
 - 图形模式登录时,顺序读取 : `/etc/profile` 和 `~/.profile`
@@ -206,6 +208,76 @@ set PATH (你想要加入的路径) $PATH
 ```
 ```bash
 souce ~/.config/fish/config.fish
+```
+
+**特殊变量**
+
+bash 存在一些特殊变量，这些变量的值由shell提供，用户不能进行赋值。
+```bash
+$?   		# 为上一个命令的退出码，用来判断上一个命令是否执行成功。返回值是0，表示上一个命令执行成功；如果是非零，上一个命令执行失败。
+$$   		# 为当前shell的进程ID。
+$_   		# 为上一个命令的最后一个参数。
+$!   		# 为最后一个后台执行的异步命令的进程ID。
+$0   		# 为当前shell的名称(在命令行直接执行时)或者脚本名(在脚本中执行时)。
+$-   		# 为当前shell的启动参数。
+$@ 和 $#   	# $#表示脚本的参数数量，$@表示脚本的参数值。
+```
+
+**变量的默认值**
+
+bash提供四个特殊语法，跟变量的默认值有关，目的是保证变量不为空。
+```
+{varname:-wore}
+如果变量varname存在且不为空，则返回它的值，否则返回word。它的目的是返回一个默认值，比如${count:-0}表示变量count不存在时返回0。
+```
+```
+{varname:=word}
+如果变量varname存在且不为空，则返回它的值，否则将它设为word，并且返回word。它的目的是设置变量的默认值，比如${count:=0}表示变量count不存在时返回0，且将count设为0。
+```
+```
+{varname:?message}
+如果变量varname存在且不为空，则返回它的值，否则打印出varname: message，并中断脚本的执行。如果省略了message，则输出默认的信息“parameter null or not set.”。它的目的是防止变量未定义，比如${count:?"undefined!"}
+表示变量count未定义时就中断执行，抛出错误，返回给定的报错信息undefined!。
+```
+```
+{carnage:+word}
+如果变量名存在且不为空，则返回word，否则返回空值。它的目的是测试变量是否存在，比如${count:+1}表示变量count存在时返回1（表示true），否则返回空值。
+```
+
+例如
+```bash
+filename=${1:?"filename missing."}
+
+# 1 表示脚本的第一个参数。如果该参数不存在，就退出脚本并报错。
+```
+
+**declare**
+
+declare 命令可以声明一些特殊类型的变量，为变量设置一些限制，比如声明只读类型的变量和整数类型的变量。
+
+declare 命令如果用在函数中，声明的变量只在函数内部有效，等同于 local 命令。不带任何参数时，declare 命令输出当前环境的所有变量，包括函数在内，等同于不带有任何参数的 set 命令。
+
+```
+declare -i aaaaaa=1 bbbbbb=2
+declare -i result
+result=aaaaaa+bbbbbb
+echo $result
+```
+
+**readonly**
+
+readonly 命令等同于 declare -r，用来声明只读变量，不能改变变量值，也不能 unset 变量。
+
+```bash
+-f	# 声明的变量为函数名。
+-p	# 打印出所有的只读变量。
+-a	# 声明的变量为数组
+```
+
+```bash
+readonly foo=1
+foo=2
+echo $?
 ```
 
 ---
@@ -383,8 +455,22 @@ ctrl+d				# 终止会话
 
 ### 历史记录
 
+**history 记录的行数**
+```bash
+echo $HISTSIZE
+```
+
+**修改默认记录的行数**
+```
+vim /etc/profile
+
+HISTSIZE=1000
+```
+
 **查看历史记录**
 ```bash
+history
+
 cat ~/.bash_history
 cat ~/.nano_history
 cat ~/.atftp_history
@@ -413,6 +499,13 @@ HISTCONTROL=ignoredups		# 忽略连续重复的命令。
 HISTCONTROL=ignorespace		# 忽略以空白字符开头的命令。
 HISTCONTROL=ignoreboth		# 同时忽略以上两种。
 HISTCONTROL=erasedups		# 忽略所有历史命令中的重复命令。
+```
+
+**查看是否配置历史命令信息**
+```bash
+cat /etc/profile
+cat ~/.bash_profile
+cat ~/.bashrc
 ```
 
 ---
@@ -450,6 +543,7 @@ cd	# 切换工作目录
 ```bash
 ls			# 查看目录下文件
 	ls -a						# 查看目录隐藏文件
+	ls -lah						# 查看的内容更新详细
 
 pwd			# 以绝对路径的方式显示用户当前工作目录
 	pwd -P						# 目录链接时,显示实际路径而非 link 路径
@@ -699,6 +793,8 @@ gedit								# 图形化的编辑器
 	按下 / 即可进入查找模式,输入要查找的字符串并按下回车. Vim 会跳转到第一个匹配.按下 n 查找下一个,按下 N 查找上一个.
 	:%s/foo/bar 			# 代表替换 foo 为 bar
 	insert 模式按 ESC 键,返回 Normal 模式
+
+	vim -r xxx.swp			# 恢复上次异常退出的文件
 	```
 - **更多操作**
 	- [Vim](./Power-Linux.md#Vim)
@@ -732,6 +828,46 @@ tr a-z A-Z < employee.txt
 200 JOHN DOE
 300 SANJAY GUPTA
 400 ASHOK SHARMA
+```
+
+**joe**
+
+`这个目前比较少见了`
+
+```shell
+joe test.txt			# 编辑文件
+
+Ctrl-K Q				# 退出
+Ctrl-K H				# 查看帮助
+```
+
+**split**
+
+`对文件进行分割`
+
+```bash
+# 按文件大小切割
+split -b 2M test 		# 把 test 文件分割成若干个小文件，每个文件大小为 2M
+
+# 按文件行数切割
+split -l 100 test out_	# 把 numfile 文件切割成若干文件，每个文件 100 行, 并且新生成的文件名字前缀为 "out_"
+
+# 按文件数量切割
+split -d -n 5 test 		# 是把 test 文件切割成 5 个小文件
+```
+
+**fallocate**
+
+```bash
+fallocate -l 10G allocatefile	# 创建一个 10G 大小的文件
+```
+
+**truncate**
+
+`缩小或者扩展文件至指定大小`
+
+```bash
+truncate -s 1G testfile
 ```
 
 ### 比较
@@ -849,6 +985,11 @@ ln file1 file2
 	tar -jcvf FileName.tar.bz DirName			# 压缩
 	```
 
+- .tar.bz2
+	```bash
+	tar -jxvf test.tar.bz2						# 解压
+	```
+
 - .gz
 	```bash
 	gunzip FileName.gz							# 解压1
@@ -901,6 +1042,12 @@ ln file1 file2
 - .deb
 	```bash
 	ar -p FileName.deb data.tar.gz | tar zxf -	# 解包
+	```
+
+- asar
+	```bash
+	npm install --engine-strict asar
+	asar e xxx.asar xxx							# 解包
 	```
 
 **7z**
@@ -1005,8 +1152,8 @@ fuser -v 22/tcp			# 查询进程使用的文件和网络套接字
 
 **路由表**
 ```bash
-route					# 查看路由表
-ip route				# 显示核心路由表
+route					# 显示/操作IP路由表
+ip route				# 显示/操纵路由，设备，策略路由和隧道
 ip neigh				# 显示邻居表
 ```
 
@@ -1074,6 +1221,35 @@ hostnamectl set-hostname test	# 修改 hostname 立即生效且重启也生效
 	systemctl restart NetworkManager
 	systemctl enable NetworkManager
 	```
+
+- ubuntu 17.10 引入的新方式 netplan
+
+	网卡信息配置在 /etc/netplan/01-network-manager-all.yaml 文件中，如果这个 yaml 文件不存在，可以使用以下的命令创建出来。
+	```bash
+	sudo netplan generate
+	```
+	创建出来的名字可能略有不同，但是 /etc/netplan/ 这个目录下面所有的 yaml 文件都可以生效。
+	```bash
+	vim /etc/netplan/01-network-manager-all.yaml
+	```
+	```yaml
+		network:
+			ethernets:
+				ens33:
+					addresses:
+						- 192.168.2.222/24
+					gateway4: 192.168.1.1
+					nameservers:
+							addresses:
+								- 8.8.8.8
+			version: 2
+	```
+
+	```bash
+	netplan apply	# 使配置生效
+	```
+
+	> 注意 : ip 配置信息要使用 yaml 语法格式
 
 - Centos
 	```bash
@@ -1346,8 +1522,18 @@ iptables -A INPUT -p tcp -s 0.0.0.0/0 --dport 22 -j DROP
 
 iptables -L			# 查看防火墙规则
 iptables-restore </root/firewall_rules.backup	# 恢复规则
+
+# 以下为清除所有策略并允许所有流量通过防火墙。这和你停止防火墙效果一样,生产环境请不要使用
 iptables -F  		# 清除防火墙配置
+iptables -X
+iptables -P INPUT ACCEPT
+iptables -P OUTPUT ACCEPT
+iptables -P FORWARD ACCEPT
 ```
+
+**更多配置**
+
+见 [Iptables.md](./实验/Iptables.md)
 
 ### ufw
 
@@ -1447,6 +1633,12 @@ aptitude install <packagename>	# 该工具会想方设法的帮助你安装(提�
 ```bash
 rm /var/lib/dpkg/updates/*
 apt-get update
+```
+
+**debconf: DbDriver "config": /var/cache/debconf/config.dat is locked by another process: Resource temporarily unavailable**
+```bash
+rm /var/cache/debconf/*.dat
+apt --fix-broken install
 ```
 
 **禁用 Ubuntu 自动更新**
@@ -1635,7 +1827,10 @@ yum install -y dnf
 ```bash
 dpkg -i xxxxx.deb  			# 安装软件
 dpkg -R /usr/local/src		# 安装路径下所有包
-dpkg -L 					# 查看软件安装位置
+dpkg -L xxxx				# 查看软件安装位置
+
+dpkg -l						# 查看已经安装的软件
+dpkg -r xxxx				# 卸载
 ```
 
 ### Pacman
@@ -1819,7 +2014,7 @@ usermod -s /usr/bin/fish <USERNAME>
 
 ```bash
 apt install -y zsh		# 安装 zsh
-chsh -s /bin/zsh	# 切换默认的 shell 为 zsh
+chsh -s /bin/zsh		# 切换默认的 shell 为 zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"	# 安装 oh-my-zsh
 git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions	# 下载命令补全插件
 
@@ -1828,7 +2023,7 @@ vim ~/.zshrc
 
 plugins=(git zsh-autosuggestions)
 
-zsh					# 重新加载 zsh 配置
+zsh						# 重新加载 zsh 配置
 
 # 更多主题见此 https://github.com/robbyrussell/oh-my-zsh/wiki/themes
 ```
@@ -1894,15 +2089,15 @@ end
 - ntpdate
 	```bash
 	# ntpdate 命令可以用于设置本地日期和时间
-	ntpdate 0.rhel.pool.ntp.org	# 网络同步时间
+	ntpdate 0.rhel.pool.ntp.org		# 网络同步时间
 	```
 
 - hwclock
 	```bash
 	# hwclock 设置硬件日期和时间
-	hwclock			# 使用不带任何参数的 hwclock 查看当前硬件日期和时间
-	hwclock -w 		# 将系统时钟同步到硬件时钟,将当前时间和日期写入 BIOS,避免重启后失效
-	hwclock -s 		# 将硬件时钟同步到系统时钟
+	hwclock					# 使用不带任何参数的 hwclock 查看当前硬件日期和时间
+	hwclock -w 				# 将系统时钟同步到硬件时钟,将当前时间和日期写入 BIOS,避免重启后失效
+	hwclock -s 				# 将硬件时钟同步到系统时钟
 	```
 
 - cal
@@ -1910,6 +2105,24 @@ end
 	# cal 用于查看日历
 	cal
 	```
+
+**ntp 服务**
+- 安装
+	```bash
+	yum install ntp			# 安装 ntp 服务
+	chkconfig ntpd on		# 开启 ntpd 服务
+	cat /etc/ntp.conf		# 查看 ntp 服务配置
+
+
+	ntpq –p     			# 查看本机和上层服务器的时间同步结果
+	ntptrace     			# 可以用來追踪某台时间服务器的时间对应关系
+	ntpdate IP   			# 客户端要和 NTP server 进行时钟同步。
+	/var/log/ntp/ntp.log	# 查看 ntp 日志
+	```
+
+	ntp.conf 的具体配置参考 http://www.ntp.org/ntpfaq/NTP-s-config.htm#S-CONFIG-BASIC
+
+	也可以查看 [文件](./笔记/文件.md#etc)
 
 **Tips**
 - ntpd 与 ntpdate 的区别
@@ -1937,14 +2150,14 @@ cp  /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime
 
 **查看系统语言**
 ```bash
-echo  $LANG 			# 查看当前操作系统的语言
+echo  $LANG 				# 查看当前操作系统的语言
 ```
 
 **修改系统语言**
 ```bash
 vim /etc/locale.conf
 
-set LANG en_US.UTF-8	# 更改默认语言
+set LANG en_US.UTF-8		# 更改默认语言
 	 zh_CN.UTF-8
 ```
 ```bash
@@ -1975,6 +2188,8 @@ cat /etc/rc.local           # 查看 rc 启动文件
 ls /etc/rc.d/rc[0~6].d
 
 runlevel                    # 查看运行级别命令
+
+service crond status		# 查看 cron 服务状态
 ```
 
 **计划任务**
@@ -1992,18 +2207,16 @@ cat /etc/anacrontab
 cat /var/spool/cron/crontabs/root
 ```
 
-**crontab**
+**crontab 命令**
 ```bash
-crontab -l   			# 列出某个用户 cron 服务的详细内容
-crontab -r   			# 删除每个用户 cront 任务(谨慎：删除所有的计划任务)
-crontab -e   			# 使用编辑器编辑当前的 crontab 文件
-
-vim /etc/crontab		# 编辑系统任务调度的配置文件
+crontab -l   				# 列出某个用户 cron 服务的详细内容
+crontab -r   				# 删除每个用户 cront 任务(谨慎：删除所有的计划任务)
+crontab -e   				# 使用编辑器编辑当前的 crontab 文件
 
 # 前5个星号分别代表:分钟,小时,几号,月份,星期几
-* * * * * command		# 每1分钟执行一次 command
-3,15 * * * * command	# 每小时的第3和第15分钟执行
-@reboot	command			# 开机启动
+* * * * * command			# 每1分钟执行一次 command
+3,15 * * * * command		# 每小时的第3和第15分钟执行
+@reboot	command				# 开机启动
 
 # 例子
 0 */2 * * * /sbin/service httpd restart	# 意思是每两个小时重启一次 apache
@@ -2013,9 +2226,78 @@ vim /etc/crontab		# 编辑系统任务调度的配置文件
 1 * * * * /home/bruce/backup			# 每小时的第一分执行 /home/bruce/backup 这个文件
 00 03 * * 1-5 find /home "*.xxx" -mtime +4 -exec rm {} \;	# 每周一至周五3点钟,在目录 /home 中,查找文件名为 *.xxx 的文件,并删除4天前的文件.
 30 6 */10 * * ls						# 意思是每月 1、11、21、31 日的 6:30 执行一次 ls 命令
+
+# 周与日月不可同时并存,可以分别以周或者是日月为单位作为循环，但你不可使用「几月几号且为星期几」的模式工作
+30 12 11 9 5 echo "just test" # 这是错误的写法
 ```
 
 可以使用在线的 CRON 表达式工具辅助 : https://tool.lu/crontab/
+
+crontab 命令相当于就是修改 `/var/spool/cron/crontabs/usename` 的文件
+
+**/etc/crontab 文件**
+
+`/etc/crontab` 默认是控制 `/etc/cron.*`, 如 `/etc/cron.daily`, `/etc/cron.weekly`, `/etc/cron.monthly` 这些
+
+格式如下:
+```
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name command to be executed
+```
+
+**/etc/crontab 文件和 crontab -e 的区别**
+
+* 使用范围
+
+	修改 `/etc/crontab` 这种方法只有 root 用户能用，这种方法更加方便与直接直接给其他用户设置计划任务，而且还可以指定执行 shell 等等，
+
+	crontab -e 这种所有用户都可以使用，普通用户也只能为自己设置计划任务。然后自动写入 `/var/spool/cron/usename`
+
+* 服务重启
+
+	```bash
+	/etc/init.d/crond restart
+
+	service crond restart
+	```
+
+* 语法格式
+
+	crontab -e 与 `/etc/crontab` 修改语法格式不一样，后者多一个 user 指定
+
+**/etc/cron.d/**
+
+`/etc/cron.d/` 目录下也是存放 crontab 的配置文件.
+
+`/etc/crontab` 和 `/etc/cron.d/` 在配置定时任务时，需要指定用户是 root，而 `/var/spool/cron/crontabs/` 已经是属于用户控制的, 所以不需要指定用户, 这是格式上的区别.
+
+cron 设置的默认环境变量:
+```
+$SHELL: /bin/sh
+$PATH: /usr/bin:/bin
+```
+如果没有设置相关的环境变量，会造成如 $PATH 问题导致的命令找不到.
+
+可以在 cron 配置文件顶部加上:
+```
+SHELL=/bin/bash
+PATH=/usr/bin:/bin:/sbin:/usr/sbin
+*/5 * * * * root ./run.sh >/dev/null 2>&1
+```
+
+**/etc/rc.local**
+
+在文件末尾 (exit 0 之前) 加上你开机需要启动的程序或执行的命令即可 (执行的程序需要写绝对路径,添加到系统环境变量的除外) ,如
+
+**/etc/profile.d/**
+
+将写好的脚本 (.sh 文件) 放到目录 `/etc/profile.d/` 下,系统启动后就会自动执行该目录下的所有 shell 脚本
 
 **at**
 
@@ -2029,20 +2311,12 @@ atq		# 列出用户的计划任务,如果是超级用户将列出所有用户的
 atrm	# 根据 Job number 删除 at 任务
 ```
 
-**/etc/rc.local**
-
-在文件末尾 (exit 0 之前) 加上你开机需要启动的程序或执行的命令即可 (执行的程序需要写绝对路径,添加到系统环境变量的除外) ,如
-
-**/etc/profile.d/**
-
-将写好的脚本 (.sh 文件) 放到目录 `/etc/profile.d/` 下,系统启动后就会自动执行该目录下的所有 shell 脚本
-
 ### SELinux
 
 **查看 SELinux 状态**
 ```bash
-getenforce			# 查看 selinux 状态
-/usr/sbin/sestatus	# 查看安全策略
+getenforce							# 查看 selinux 状态
+/usr/sbin/sestatus					# 查看安全策略
 ```
 
 **关闭 SELinux**
@@ -2140,9 +2414,9 @@ umask 002			# 配置反码,代表创建文件权限是 664 即 rw-rw-r--,默认 
 # 需要长期修改,可以直接改 vim /etc/profile 中 umask 值
 
 chattr				# 可修改文件的多种特殊属性
-	chattr +i <File>		# 增加后,使文件不能被删除、重命名、设定链接接、写入、新增数据
-	chattr +a <File>		# 增加该属性后,只能追加不能删除,非root用户不能设定该属性
-	chattr +c <File>		# 自动压缩该文件,读取时会自动解压.Note: This attribute has no effect in the ext2, ext3, and ext4 filesystems.
+	chattr +i <File>				# 增加后,使文件不能被删除、重命名、设定链接接、写入、新增数据
+	chattr +a <File>				# 增加该属性后,只能追加不能删除,非root用户不能设定该属性
+	chattr +c <File>				# 自动压缩该文件,读取时会自动解压.Note: This attribute has no effect in the ext2, ext3, and ext4 filesystems.
 
 lsattr <File>		# 该命令用来读取文件或者目录的特殊权限
 ```
@@ -2157,8 +2431,8 @@ adduser user1 sudo	# 将 user1 加到 sudo 组中
 deluser user1 sudo	# 将 user1 从 sudo 组中删除
 ```
 ```bash
-sudo -v # 查看 sudo 信息
-sudo -l # 查看当前权限
+sudo -v 			# 查看 sudo 信息
+sudo -l 			# 查看当前权限
 ```
 
 **ACL**
@@ -2382,15 +2656,14 @@ swapon -s
 
 如果机器没有安装 swap 分区可以自己分配一个
 ```bash
-# 创建一个swap文件,大小为1G
+# 创建一个 swap 文件, 大小为 1G
 dd if=/dev/zero of=/home/f8xswap bs=1M count=1024
 
-# 将文件格式转换为swap格式的
+# 将文件格式转换为 swap 格式的
 mkswap /home/f8xswap
 
-# 把这个文件分区挂载swap分区
+# 把这个文件分区挂载 swap 分区
 swapon /home/f8xswap
-
 ```
 
 长期挂载
@@ -2412,8 +2685,8 @@ Linux 中每个硬件都被当做一个文件，包括磁盘。磁盘以磁盘�
 
 **分区**
 ```bash
-fdisk -l			# 查看磁盘情况
-fdisk /dev/sdb		# 创建系统分区
+fdisk -l			# 查看磁盘情况
+fdisk /dev/sdb		# 创建系统分区
 	n	# 添加一个分区
 	p	# 建立主分区
 	1	# 分区号
@@ -2475,10 +2748,10 @@ shred -zvu -n  5 <File>	# 主要用于文件覆盖内容,也可以删除
 	du [options] [arguments ...]
 
 	# e.g.
-		du -h . | sort			# 以人类可读的格式进行显示,排序显示
-		du -hd 1 / | sort -hr
-		du -sh /etc/yum			# 特定目录的总使用量
-		du --max-depth=1 -h		# 查看文件夹下各个文件夹的磁盘占用
+		du -H . | sort			# 以人类可读的格式进行显示,排序显示
+		du -Hd 1 / | sort -hr
+		du -sH /etc/yum			# 特定目录的总使用量
+		du --max-depth=1 -H		# 查看文件夹下各个文件夹的磁盘占用
 	```
 
 **dd**
@@ -2525,7 +2798,7 @@ dd [options]
 
 	物理卷数据转移
 	```bash
-	pvmove /dev/sda4 /dev/sda5  # 把/dev/sda4物理卷数据转移到/dev/sda5物理卷上，注意转移的时候查看物理卷大小
+	pvmove /dev/sda4 /dev/sda5  # 把 / dev/sda4 物理卷数据转移到 / dev/sda5 物理卷上，注意转移的时候查看物理卷大小
 	```
 
 	删除物理卷
@@ -2610,12 +2883,12 @@ dd [options]
 	```bash
 	resize2fs /dev/vg1/lvdisk1
 	xfs_growfs /dev/vg1/lvdisk1
-	# 注意：resize2fs主要针对ext4目录格式进行处理，而xfs_growfs主要针对xfs目录格式。
+	# 注意：resize2fs 主要针对 ext4 目录格式进行处理，而 xfs_growfs 主要针对 xfs 目录格式。
 	```
 
 	挂载重启失效问题
 	```bash
-	# 利用root权限编辑/etc/fstab文件加入挂载点，这样开机会自动挂载。
+	# 利用 root 权限编辑 / etc/fstab 文件加入挂载点，这样开机会自动挂载。
 
 	/dev/vg1/lvdisk1 /hehe ext4    defaults    0  0
 	```
@@ -2676,13 +2949,69 @@ dd [options]
 **启动蓝牙服务**
 ```bash
 service bluetooth start
+systemctl start bluetooth
+```
+
+**查看蓝牙设备**
+```bash
+hciconfig			# 查看蓝牙设备
+
+hcitool dev
+	hcitool --help
+	hcitool lescan	# 扫描周围低功耗设备(BLE)
+	hcitool scan	# 扫描周围蓝牙设备
+	hcitool -i hci0 dev	# 查看蓝牙设备信息
+
+gattool				# 对 BLE 数据进行精细化管理的话，就需要用到 gattool，使用 gattool 对蓝牙设备发送指令的操作上要比 hcitool 的 cmd 齐全很多
+	gattool -h
 ```
 
 **激活蓝牙设备**
 ```bash
+# hciconfig 命令如 ifconfig 一样，可以控制蓝牙设备的开启与关闭
 hciconfig hci0 up	# 激活蓝牙设备
+hciconfig hci0 down	# 设备关闭
 hciconfig hci0		# 查看属性
 	# 第二行中的 “BD Address”，这是蓝牙设备的MAC地址
+```
+
+**关闭本地 pin 验证**
+```bash
+hciconfig hci0 noauth
+```
+
+**设置连接 pin 码**
+```bash
+/var/lib/bluetooth/XX:XX:XX:XX:XX:XX/pincodes	# XX:XX:XX:XX:XX:XX 为本地设备地址
+
+文件格式为: XX:XX:XX:XX:XX:XX 1234				# XX:XX:XX:XX:XX:XX 为目标设备地址
+```
+
+**bluetoothctl**
+```bash
+bluetoothctl		# 蓝牙工具软件
+	bluetoothctl scan on						# 主动搜索可以连接的蓝牙设备
+	bluetoothctl discoverable on				# 使蓝牙适配器可被搜索
+	bluetoothctl pair FC:69:47:7C:9D:A3			# 对指定设备进行配对
+	bluetoothctl connect FC:69:47:7C:9D:A3		# 配对后,连接指定设备
+	bluetoothctl paired-devices					# 查看已配对的设备
+	bluetoothctl devices						# 列出计算机蓝牙范围内的设备
+	bluetoothctl trust FC:69:47:7C:9D:A3		# 对指定设备进行信任
+	bluetoothctl untrust FC:69:47:7C:9D:A3		# 取消对指定设备的信任
+
+	bluetoothctl remove FC:69:47:7C:9D:A3		# 删除已配对的设备
+	bluetoothctl disconnect FC:69:47:7C:9D:A3	# 断开指定设备的连接
+	bluetoothctl block FC:69:47:7C:9D:A3		# 将指定设备加入黑名单
+```
+
+**rfcomm**
+```bash
+cat /etc/bluetooth/rfcomm.conf
+
+rfcomm --help
+
+# 输出字符到蓝牙串口
+echo y>/dev/rfcomm0
 ```
 
 ---

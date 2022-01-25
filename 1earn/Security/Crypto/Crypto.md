@@ -18,10 +18,14 @@
     * [ASCII](#ascii)
     * [Base](#base)
         * [Base64](#base64)
-        * [Base32](#base32)
         * [Base16](#base16)
+        * [Base32](#base32)
         * [Base58](#base58)
+        * [Base62](#base62)
+        * [Base85](#base85)
+        * [Base91](#base91)
         * [base92](#base92)
+        * [Base100](#base100)
     * [Escape/Unescape](#escapeunescape)
     * [HtmlEncode](#htmlencode)
     * [Punycode](#punycode)
@@ -30,6 +34,9 @@
     * [Unicode](#unicode)
     * [URL](#url)
     * [UTF](#utf)
+        * [UTF-8](#utf-8)
+        * [UTF-7](#utf-7)
+        * [UTF-16](#utf-16)
     * [UUencode](#uuencode)
     * [XXencode](#xxencode)
     * [进制](#进制)
@@ -54,6 +61,10 @@
         * [DES](#des)
             * [3DES](#3des)
         * [RC4](#rc4)
+        * [TEA](#tem)
+        * [Xtea](#xtea)
+        * [Serpent](#serpent)
+        * [BlowFish](#blowfish)
     * [非对称性加密算法](#非对称性加密算法)
         * [RSA](#rsa)
     * [国密](#国密)
@@ -98,6 +109,11 @@
         * [格朗普雷密码](#格朗普雷密码)
         * [比尔密码](#比尔密码)
         * [键盘密码](#键盘密码)
+            * [手机键盘密码](#手机键盘密码)
+            * [电脑键盘棋盘](#电脑键盘棋盘)
+            * [电脑键盘坐标](#电脑键盘坐标)
+            * [电脑键盘QWE](#电脑键盘qwe)
+        * [01248密码](#01248密码)
         * [恩尼格玛密码](#恩尼格玛密码)
         * [维吉尼亚密码](#维吉尼亚密码)
         * [猪圈密码](#猪圈密码)
@@ -106,11 +122,21 @@
 * **其他编码**
     * [Brainfuck/Ook](#brainfuck/ook)
     * [JSfuck](#jsfuck)
-    * [颜文字加密](#颜文字加密)
+    * [JJEncode](#JJEncode)
+    * [PPEncode](#PPEncode)
+    * [AAEncode/颜文字加密](#AAEncode/颜文字加密)
     * [与佛论禅](#与佛论禅)
     * [文本加密为汉字](#文本加密为汉字)
     * [随机密码生成](#随机密码生成)
     * [核心价值观加密](#核心价值观加密)
+    * [蝌蚪文](#蝌蚪文)
+    * [whitespace](#whitespace)
+    * [音符加密](#音符加密)
+    * [盲文对照](#盲文对照)
+    * [五笔编码](#五笔编码)
+    * [中文电码](#中文电码)
+    * [LOGO语言](#LOGO语言)
+    * [Dissection Font](#Dissection-Font)
 
 ---
 
@@ -121,7 +147,7 @@
 - https://intensecrypto.org/public/
 - https://cryptohack.org/
 
-**工具**
+**相关工具**
 - [ffffffff0x/BerylEnigma](https://github.com/ffffffff0x/BerylEnigma) - 一个为渗透测试与CTF而制作的工具集，主要实现一些加解密的功能。
 - [gchq/CyberChef](https://github.com/gchq/CyberChef) - 一个用于加密、编码、压缩和数据分析的网络应用
 - [Snowming04/Cipher_Encryption_Type_Identification:.](https://github.com/Snowming04/Cipher_Encryption_Type_Identification) - 对密文的加密类型进行判断的命令行工具
@@ -152,7 +178,7 @@
 - https://cryptii.com/
 - https://www.ssleye.com/
 
-**文章**
+**相关文章**
 - [为什么要在密码里加点"盐" | Libuchao's blog](https://libuchao.com/2013/07/05/password-salt)
 - [CTF中那些脑洞大开的编码和加密 - jack_Meng](https://www.cnblogs.com/mq0036/p/6544055.html)
 - [How we recovered over $300K of Bitcoin](https://reperiendi.wordpress.com/2020/04/03/how-i-recovered-over-300k-of-bitcoin/)
@@ -239,6 +265,23 @@ ASCII编码对应十进制:
 ---
 
 ## Base
+
+**相关文章**
+- [base全家桶的安装使用方法](https://www.cnblogs.com/pcat/p/11625834.html)
+
+**相关工具**
+- [mufeedvh/basecrack](https://github.com/mufeedvh/basecrack) - Decode All Bases - Base Scheme Decoder
+    ```bash
+    apt-get install tesseract-ocr libtesseract-dev
+
+    git clone https://github.com/mufeedvh/basecrack.git
+    cd basecrack
+    pip3 install -r requirements.txt
+    python3 basecrack.py -h
+
+    echo "IX(Fp@nNG6ef<,*TFE]IT^zdINAb9EVbp,e<u=O6nN)/u+MTnU;Fo#VvQ&cK;mLZI#Jbdook<O{W#+gY%ooe#6pTkTa.9YPU8Uc=pl9BhSM9%kISw2k:8..u/6F2BwNndPZ2o#7NHNP3g,HlZu><*[Nv+T8" | python3 basecrack.py --magic
+    ```
+
 ### Base64
 
 base64、base32、base16 可以分别编码转化8位字节为6位、5位、4位.16,32,64 分别表示用多少个字符来编码,这里我注重介绍 base64.Base64 常用于在通常处理文本数据的场合,表示、传输、存储一些二进制数据.包括 MIME 的 email,email via MIME,在 XML 中存储复杂数据.
@@ -335,7 +378,7 @@ base64、base32、base16 可以分别编码转化8位字节为6位、5位、4位
 ### base92
 
 **相关项目**
-- https://github.com/thenoviceoof/base92
+- [thenoviceoof/base92](https://github.com/thenoviceoof/base92)
 
 **在线工具**
 - http://ctf.ssleye.com/base92.html
@@ -343,6 +386,9 @@ base64、base32、base16 可以分别编码转化8位字节为6位、5位、4位
 ---
 
 ### base100
+
+**相关项目**
+- [AdamNiederer/base100](https://github.com/AdamNiederer/base100)
 
 **在线工具**
 - http://www.atoolbox.net/Tool.php?Id=936
@@ -443,6 +489,7 @@ rawurlencode($string)));
 **在线工具**
 - http://web.chacuo.net/charsetquotedprintable
 - http://www.mxcz.net/tools/QuotedPrintable.aspx
+- https://www.wishingstarmoye.com/ctf/quoted-printable
 
 ---
 
@@ -502,9 +549,21 @@ url 编码又叫百分号编码, 是统一资源定位 (URL) 编码方式. URL �
 
 ## UTF
 
+### UTF-8
+
 **在线工具**
 - http://tool.chinaz.com/Tools/UTF-8.aspx
 - http://tool.oschina.net/encode?type=2
+
+### UTF-7
+
+**在线工具**
+- http://toolswebtop.com/text/process/decode/utf-7
+
+### UTF-16
+
+**在线工具**
+- https://www.qqxiuzi.cn/bianma/utf-16.htm
 
 ---
 
@@ -646,6 +705,9 @@ N 进制就是逢 N 进 1，最小值为 0，最大值为 N-1
 
 ![](../../../assets/img/Security/Crypto/Crypto/TIM截图20190814151904.png)
 
+**在线工具**
+- https://www.wishingstarmoye.com/ctf/tapcode
+
 ---
 
 ## 曼彻斯特编码
@@ -721,6 +783,7 @@ N 进制就是逢 N 进 1，最小值为 0，最大值为 N-1
 
 **相关工具**
 - [免费在线条码生成器](https://barcode.tec-it.com/zh)
+- http://tiaoxingma.wiicha.com/
 
 ---
 
@@ -947,7 +1010,7 @@ RIPEMD-160("") = 9c1185a5c5e9fc54612808977ee8f548b2258d31
 
 # 现代密码
 
-**文章**
+**相关文章**
 - [安全体系(一)—— DES算法详解](https://www.cnblogs.com/songwenlong/p/5944139.html)
 - [安全体系(零)—— 加解密算法、消息摘要、消息认证技术、数字签名与公钥证书](http://www.cnblogs.com/songwenlong/p/6517165.html)
 - [Blowfish (密码学) - 维基百科,自由的百科全书](https://zh.wikipedia.org/wiki/Blowfish_(%E5%AF%86%E7%A0%81%E5%AD%A6))
@@ -1065,6 +1128,13 @@ RC4由伪随机数生成器和异或运算组成。RC4的密钥长度可变，�
 
 ---
 
+### BlowFish
+
+**相关文章**
+- [BlowFish加解密原理与代码实现](https://cloud.tencent.com/developer/article/1836650)
+
+---
+
 ## 非对称性加密算法
 
 公开密钥密码学（英语：Public-key cryptography）也称非对称式密码学（英语：Asymmetric cryptography）是密码学的一种算法，它需要两个密钥，一个是公开密钥，另一个是私有密钥；公钥用作加密，私钥则用作解密。使用公钥把明文加密后所得的密文，只能用相对应的私钥才能解密并得到原本的明文，最初用来加密的公钥不能用作解密。由于加密和解密需要两个不同的密钥，故被称为非对称加密；不同于加密和解密都使用同一个密钥的对称加密。公钥可以公开，可任意向外发布；私钥不可以公开，必须由用户自行严格秘密保管，绝不透过任何途径向任何人提供，也不会透露给被信任的要通信的另一方。
@@ -1094,9 +1164,11 @@ RC4由伪随机数生成器和异或运算组成。RC4的密钥长度可变，�
 - [CTF中RSA套路](https://err0rzz.github.io/2017/11/14/CTF%E4%B8%ADRSA%E5%A5%97%E8%B7%AF/)
 - [RSA算法基础详解](https://www.cnblogs.com/hykun/p/RSA.html)
 - [RSA算法原理——（3）RSA加解密过程及公式论证](https://blog.csdn.net/u014044812/article/details/80866759)
+- [深入浅出RSA在CTF中的攻击套路](https://xz.aliyun.com/t/6459)
 
 **相关工具**
 - [SageMath](https://mirrors.tuna.tsinghua.edu.cn/sagemath/linux/64bit/index.html)
+    - [Sage Cell Server](https://sagecell.sagemath.org/) - 在线 Sagemath
 - [factordb](http://www.factordb.com/) - 在线分解质因数, 通常用于分解 n 得到 p q
   - [ryosan-470/factordb-python](https://github.com/ryosan-470/factordb-python) - 命令行分解
     ```bash
@@ -1129,21 +1201,30 @@ RC4由伪随机数生成器和异或运算组成。RC4的密钥长度可变，�
     ```
 - openssl
     ```bash
-    openssl rsa -pubin -in pubkey.pem -text -modulus  # 查看公钥文件
+    # 使用openssl解析公钥
+    openssl rsa -text -modulus -pubin -in public.pem
 
-    openssl rsautl -decrypt -inkey private.pem -in flag.enc -out flag # 解密
+    # 使用openssl解析私钥
+    openssl rsa -text -modulus -in private.pem
+
+    # 解密
+    openssl rsautl -decrypt -inkey private.pem -in flag.enc -out flag
 
     # 给出了私钥文件private.pem和flag.en,解密密文
     opensslrsautl -decrypt -in flag.enc(密文名称) -inkey private.pem
+
+    # 使用openssl加密
+    openssl rsautl -encrypt -in flag.txt -inkey public.pem -pubin -out cipher.txt
     ```
 - [ablocelayes/rsa-wiener-attack](https://github.com/pablocelayes/rsa-wiener-attack)
-- [Sage Cell Server](https://sagecell.sagemath.org/) - 在线 Sagemath
 - [3summer/CTF-RSA-tool](https://github.com/3summer/CTF-RSA-tool)
 - [Integer factorization calculator](https://www.alpertron.com.ar/ECM.HTM)
 
 **相关资源**
 - [kur0mi/CTF-RSA](https://github.com/kur0mi/CTF-RSA)
 - [Zui-Qing-Feng/RSA](https://github.com/Zui-Qing-Feng/RSA)
+- [yifeng-lee/RSA-In-CTF](https://github.com/yifeng-lee/RSA-In-CTF)
+- [findneo/RSA-ATTACK](https://github.com/findneo/RSA-ATTACK)
 
 **Writeup**
 - [RSA的dp泄露 —— 【WUST-CTF2020】leak](https://blog.csdn.net/qq_42939527/article/details/105202716)
@@ -1172,9 +1253,14 @@ RC4由伪随机数生成器和异或运算组成。RC4的密钥长度可变，�
 - [2019强网杯 - 密码学-RSA-Coppersmith](https://blog.csdn.net/q851579181q/article/details/90645041)
 - [N1CTF 2019 - Part3-BabyRSA](http://duksctf.github.io/2019/09/08/N1CTF2019-Part3-BabyRSA.html)
 - [N1CTF 2019: BabyRSA](https://garygurlaskie.com/ctf/2019/09/07/n1ctf-babyrsa.html)
+- [BUUCTF--[INSHack2017]rsa16m](https://www.cnblogs.com/Sentry-InkCity/p/15332492.html)
+- [虎符ctf2020 crypto GM](http://39.106.50.81/index.php/archives/9/)
+- [BUUCTF 强网杯2019 Copperstudy](https://blog.csdn.net/walker_feng/article/details/108889696)
+- [BUUCTF 每日打卡 2021-8-3](https://blog.csdn.net/weixin_52446095/article/details/119355363)
+- [[RoarCTF2019]babyRSA-阶乘取模（威尔逊定理）](https://blog.csdn.net/weixin_45859850/article/details/111462791)
 
 **Tips**
-- e 的一般值 65537(0x10001)
+- e 的一般为(如果题目里没给你) 65537(0x10001)
 
 ---
 
@@ -1190,6 +1276,9 @@ RC4由伪随机数生成器和异或运算组成。RC4的密钥长度可变，�
 - [algorithmNation:国密算法 SM2加解密 SM2 SM3 SM4签名验签](https://gitee.com/xshuai/algorithmNation)
 - [ZZMarquis/gmhelper:基于BC库:国密SM2/SM3/SM4算法简单封装;实现SM2 X509v3证书的签发;实现SM2 pfx证书的签发 ](https://github.com/ZZMarquis/gmhelper)
 - [gotoworld/hsd-cipher-sm](https://github.com/gotoworld/hsd-cipher-sm) - JAVA 国产密码算法 SM2，SM3，SM4 实现
+- [guanzhi/GmSSL](https://github.com/guanzhi/GmSSL) - 支持国密 SM2/SM3/SM4/SM9/ZUC/SSL 的 OpenSSL 分支
+- [duanhongyi/gmssl](https://github.com/duanhongyi/gmssl) - a python crypto for sm2/sm3/sm4
+- [snowlandltd/snowland-smx-python](https://gitee.com/snowlandltd/snowland-smx-python) - 国密算法SM2,SM3,SM4,ZUC
 
 ### SM1
 
@@ -1205,9 +1294,10 @@ SM2 为非对称加密,基于 ECC.该算法已公开.由于该算法基于ECC,�
 
 ### SM3
 
-国密即国家密码局认定的国产密码算法.主要有 SM1,SM2,SM3,SM4.密钥长度和分组长度均为 128 位.
+SM3 消息摘要. 可以用 MD5 作为对比理解. 该算法已公开. 校验结果为 256 位.
 
-SM3 消息摘要.可以用 MD5 作为对比理解.该算法已公开.校验结果为256位.
+**相关文章**
+- [python SM3密码杂凑算法](https://blog.csdn.net/qq_37969092/article/details/113525749)
 
 ---
 
@@ -1227,7 +1317,7 @@ SM9主要包括三部分：签名算法、密钥交换算法、加密算法，�
 
 # 古典密码
 
-**文章**
+**相关文章**
 - [Leet - 维基百科,自由的百科全书](https://zh.wikipedia.org/wiki/Leet)
 - [纳瓦霍密码](https://baike.baidu.com/item/%E7%BA%B3%E7%93%A6%E9%9C%8D%E5%AF%86%E7%A0%81/9482868)
 
@@ -1253,7 +1343,7 @@ SM9主要包括三部分：签名算法、密钥交换算法、加密算法，�
 
 - 密文: Teucbonojmsvrhlzdghqikrwfxupoeteayo
 
-**文章**
+**相关文章**
 - [Practical Cryptography](http://www.practicalcryptography.com/ciphers/classical-era/rail-fence/)
 
 **在线工具**
@@ -1280,6 +1370,8 @@ SM9主要包括三部分：签名算法、密钥交换算法、加密算法，�
 
 ### 列移位密码
 
+`Columnar Transposition Cipher`
+
 列移位密码(Columnar Transposition Cipher)是一种比较简单,易于实现的换位密码,通过一个简单的规则将明文打乱混合成密文.
 
 > 以明文 The quick brown fox jumps over the lazy dog,密钥 how are u为例:
@@ -1295,6 +1387,11 @@ SM9主要包括三部分：签名算法、密钥交换算法、加密算法，�
 > 密文: qoury inpho Tkool hbxva uwmtd cfseg erjez
 
 另外由列移位密码变化来的密码也有其他的,比如 Amsco密码 (Amsco Cipher)和 Cadenus密码 (Cadenus Cipher).
+
+**在线工具**
+- https://www.wishingstarmoye.com/ctf/columnar-transposition-cipher
+
+---
 
 ## 替换加密
 ### ADFGX
@@ -1439,6 +1536,9 @@ Porta 密码(`Porta Cipher`)是一个由意大利那不勒斯的医生Giovanni B
 
 Porta 密码可以被以 维吉尼亚密码 破解相类似方式进行自动攻破,破解Porta密码第一步同样是先确定密钥长度
 
+**在线工具**
+- https://www.wishingstarmoye.com/ctf/porta
+
 ---
 
 ### ROT
@@ -1475,9 +1575,13 @@ ABCDEFGHIJKLMNOPQRSTUVWXYZ
 ZYXWVUTSRQPONMLKJIHGFEDCBA
 
 差不多就是把A换成Z,Z换成A
+
 > 明文: the quick brown fox jumps over the lazy dog
 
 > 密文: gsv jfrxp yildm ulc qfnkh levi gsv ozab wlt
+
+**在线工具**
+- https://www.wishingstarmoye.com/ctf/atbashcipher
 
 ---
 
@@ -1487,6 +1591,7 @@ ZYXWVUTSRQPONMLKJIHGFEDCBA
 
 **在线工具**
 - http://rumkin.com/tools/cipher/playfair.php
+- https://www.wishingstarmoye.com/ctf/playfair
 
 ---
 
@@ -1554,6 +1659,8 @@ M  --    |Z  --..  |=  -...-
 
 ### 简单替换密码
 
+`Simple Substitution`
+
 简单换位密码(Simple Substitution Cipher)加密方式是以每个明文字母被与之唯一对应且不同的字母替换的方式实现的,它不同于恺撒密码,因为密码字母表的字母不是简单的移位,而是完全是混乱的.
 
 例子:
@@ -1568,6 +1675,9 @@ M  --    |Z  --..  |=  -...-
 当密文数据足够多时这种密码我们可以通过字频分析方法破解或其他方法破解
 
 - http://www.practicalcryptography.com/cryptanalysis/stochastic-searching/cryptanalysis-simple-substitution-cipher/
+
+**在线工具**
+- https://www.wishingstarmoye.com/ctf/simple-substitution
 
 ---
 
@@ -1586,6 +1696,8 @@ M  --    |Z  --..  |=  -...-
 
 ### 波利比奥斯方阵密码
 
+`Polybius Square`
+
 波利比奥斯方阵密码(`Polybius Square Cipher`或称`波利比奥斯棋盘`)是棋盘密码的一种,是利用波利比奥斯方阵进行加密的密码方式,简单的来说就是把字母排列好,用坐标(行列)的形式表现出来.字母是密文,明文便是字母的坐标.
 
 常见的排布方式:
@@ -1597,6 +1709,9 @@ M  --    |Z  --..  |=  -...-
 > 明文: THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG
 >
 > 密文: 442315 4145241325 1242345233 213453 2445323543 442315 31115554 143422
+
+**在线工具**
+- https://www.wishingstarmoye.com/ctf/polybius-square
 
 ---
 
@@ -1673,6 +1788,7 @@ THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 和密钥 CULTURE 为例来讲解.�
 
 **在线工具**
 - http://www.atoolbox.net/Tool.php?Id=920
+- https://www.wishingstarmoye.com/ctf/autokey
 
 **爆破密匙**
 - http://www.practicalcryptography.com/cryptanalysis/stochastic-searching/cryptanalysis-autokey-cipher/
@@ -1684,6 +1800,8 @@ THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 和密钥 CULTURE 为例来讲解.�
 
 ### 博福特密码
 
+`Beaufort Cipher`
+
 博福特密码(`Beaufort Cipher`),是一种类似于维吉尼亚密码的代换密码,由弗朗西斯·蒲福(Francis Beaufort)发明.它最知名的应用是Hagelin M-209密码机.博福特密码属于对等加密,即加密演算法与解密演算法相同.
 
 > 明文: THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG
@@ -1693,6 +1811,9 @@ THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 和密钥 CULTURE 为例来讲解.�
 >> 加密过程:如果第一行为明文字母,第一列为密文字母,那么沿明文字母'T'列出现密钥字母'C'的行号就是密文字母'J',以此类推.
 >
 > 密文: JNH DAJCS TUFYE ZOX CZICM OZHC BKA RUMV RDY
+
+**在线工具**
+- https://www.wishingstarmoye.com/ctf/beaufortcipher
 
 ---
 
@@ -1743,6 +1864,9 @@ THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 和密钥 CULTURE 为例来讲解.�
 
 以E(x) = (5x + 8) mod 26加密,通过计算可得D(x)=21(x - 8) mod 26,这样便可以得到明文.
 
+**在线工具**
+- https://www.wishingstarmoye.com/ctf/affinecipher
+
 ---
 
 ### 培根密码
@@ -1768,6 +1892,8 @@ H = aabbb | Q = abbbb   | Z = babbb
 ---
 
 ### 双密码
+
+`Bifid Cipher`
 
 双密码(`Bifid Cipher`)结合了波利比奥斯方阵换位密码,并采用分级实现扩散,这里的"双"是指用 2 个密钥进行加密.双密码是由法国 Felix Delastelle 发明,除此之外 Felix Delastelle 还发明了三分密码(Trifid Cipher),四方密码(Four-Square Cipher).还有一个 两方密码 (Two-Square)与四方密码类似, 共轭矩阵双密码 (Conjugated Matrix Bifid Cipher)也是双密码的变种.
 ```
@@ -1802,6 +1928,9 @@ H = aabbb | Q = abbbb   | Z = babbb
 **未知密阵破解**
 
 手工分析破解双密码是有一定难度的,每个字母都是同过 3 个数字进行非线性代替转换,而且之后还会对字母顺序进行打乱,这样使双密码比一些替换密码和换位密码更难破解.然而,现在是计算机时代,这张加密方式没有安全性可言,通过 模拟退火 算法就能快速找到双密码的密阵.
+
+**在线工具**
+- https://www.wishingstarmoye.com/ctf/bifidcipher
 
 ---
 
@@ -1850,6 +1979,8 @@ H = aabbb | Q = abbbb   | Z = babbb
 ---
 
 ### 四方密码
+
+`Four Square Cipher`
 
 四方密码(Four-Square Cipher)是类似普莱菲尔密码双字母加密密码,这样使加密效果强于其他替换密码,因为频率分析变得更加困难了.
 
@@ -1901,6 +2032,9 @@ H = aabbb | Q = abbbb   | Z = babbb
                 LPHABETINORDERALTERNATIVELYTHECIPHERTEXTSQUARESCANBGENERATEDCO
                 MPLETELYRANDOMLYTHEFOURSQUAREALGORITHMALLOWSFORTWOSPARATEKEYSO
                 NEFOREACHOFTHETWOCIPHERTEXTMATRICESX'
+
+**在线工具**
+- https://www.wishingstarmoye.com/ctf/four-square
 
 ---
 
@@ -2044,13 +2178,13 @@ I have deposited in the county of Bedford...
 
 ![](../../../assets/img/Security/Crypto/Crypto/14.jpg)
 
-#### 电脑键盘 QWE
+#### 电脑键盘QWE
 
 电脑键盘 QWE 加密法，就是用字母表替换键盘上面的排列顺序。
 
 ![](../../../assets/img/Security/Crypto/Crypto/12.jpg)
 
-### 01248 密码
+### 01248密码
 
 该密码又称为云影密码，使用 0，1，2，4，8 四个数字，其中 0 用来表示间隔，其他数字以加法可以表示出 如：28=10，124=7，18=9，再用 1->26 表示 A->Z。
 
@@ -2078,9 +2212,14 @@ I have deposited in the county of Bedford...
 **模拟软件**
 - https://enigmamuseum.com/
 
+**在线工具**
+- https://www.wishingstarmoye.com/ctf/enigma
+
 ---
 
 ### 维吉尼亚密码
+
+`Vigenere`
 
 维吉尼亚密码(`Vigenère Cipher`)是在单一恺撒密码的基础上扩展出多表代换密码,根据密钥(当密钥长度小于明文长度时可以循环使用)来决定用哪一行的密表来进行替换,以此来对抗字频统计
 
@@ -2103,6 +2242,8 @@ I have deposited in the county of Bedford...
 /////[URL](http://www.practicalcryptography.com/cryptanalysis/stochastic-searching/cryptanalysis-vigenere-cipher/)/////
 
 **变种**
+
+`Gronsfeld`
 
 有几种密码和维吉尼亚密码相似,格罗斯费尔德密码(`Gronsfeld cipher`)实际上和维吉尼亚密码相同,除了使用了数字来代替字母以外没有什么区别.数字可以选择一种数列,如斐波那契数列,或者一些其他的伪随机序列.格罗斯费尔德密码密码分析过程和维吉尼亚密码大同小异,不过,自动密钥密码不能使用 卡西斯基算法 (kasiski)来破译,因为自动密钥密码的密钥不重复循环使用,破译自动密钥密码最好的方法的就是从密文不断尝试和猜测其中明文或密钥的一部分.
 
@@ -2147,7 +2288,7 @@ I have deposited in the county of Bedford...
 
 ---
 
-# 其他编码
+# 其他编码/语言
 #### Brainfuck/Ook
 
 **在线工具**
@@ -2179,7 +2320,7 @@ PPEncode可以把Perl代码转换成只有英文字母的字符串。
 **在线工具**
 - http://www.atoolbox.net/Tool.php?Id=719
 
-#### 颜文字加密
+#### AAEncode/颜文字加密
 
 **在线工具**
 - https://cat-in-136.github.io/2010/12/aadecode-decode-encoded-as-aaencode.html
@@ -2241,3 +2382,18 @@ PPEncode可以把Perl代码转换成只有英文字母的字符串。
 
 **在线工具**
 - https://f1aa.com/logo/jslogo/index.html?lang=cn
+
+#### Dissection-Font
+
+**在线工具**
+- [Dissection Font](http://erikdemaine.org/fonts/dissect/)
+
+#### 文言文编程语言
+
+- [wenyan-lang/wenyan](https://github.com/wenyan-lang/wenyan)
+- https://ide.wy-lang.org/
+
+#### 威妥玛拼音
+
+**在线工具**
+- [威妥玛拼音转换](https://www.chineseconverter.com/zh-cn/convert/wade-giles-to-chinese)

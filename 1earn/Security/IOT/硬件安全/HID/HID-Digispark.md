@@ -20,6 +20,7 @@
 - [Digispark(ATTINY85) 微型开发板驱动安装与开发环境配置教程](http://www.cnblogs.com/Mayfly-nymph/p/9293806.html)
 - [如何给Digspark ATTINY85下载程序](https://blog.csdn.net/terminaterfxy/article/details/79623152)
 - [Linux Conflict w/ Digistump DigiKeyboard.h include](https://forum.arduino.cc/index.php?topic=565616.msg3853561)
+- [BadUSB的制作（Digispark篇）](https://mp.weixin.qq.com/s/A8KaMP-AJsuZSyyR6Zs1UA)
 
 **资源**
 - [DigiKeyboard_DE/DigiKeyboard.h](https://github.com/BesoBerlin/DigiKeyboard_DE/blob/master/DigiKeyboard.h) - keyboard 库文件
@@ -77,7 +78,7 @@ https://github.com/digistump/DigistumpArduino/releases/download/1.6.7/Digistump.
 
 > 注:再次强调,如果速度慢可以配置代理
 
-最后，打开 Tools -> Board，然后选择 Digispark (Default — 16.5mhz)并将其设置为默认值。
+最后，打开 Tools -> Board，然后选择 Digispark (Default—16.5mhz)并将其设置为默认值。
 
 ![](../../../../../assets/img/Security/IOT/硬件安全/HID/HID-Digispark/7.png)
 

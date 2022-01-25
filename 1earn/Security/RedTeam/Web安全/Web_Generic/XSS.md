@@ -15,7 +15,7 @@
 **相关文章**
 - [XSS 插入绕过一些方式总结](https://blog.csdn.net/qq_29277155/article/details/51320064)
 - [XSS 总结](https://xz.aliyun.com/t/4067)
-- [WAF的 XSS 绕过姿势](https://www.freebuf.com/articles/web/81959.html)
+- [WAF的 XSS 绕过姿势](https://ha.cker.in/Article/6239)
 - [他山之石 | 对 XSS 的一次深入分析认识](https://www.freebuf.com/articles/web/195507.html)
 - [minimaxir/big-list-of-naughty-strings](https://github.com/minimaxir/big-list-of-naughty-strings)
 - [深入理解浏览器解析机制和 XSS 向量编码](http://bobao.360.cn/learning/detail/292.html)
@@ -26,6 +26,9 @@
 - [通过XSS窃取localStorage中的JWT](http://www.arkteam.net/?p=4453)
 - [坑死我的HTTPOnly](http://gv7.me/articles/2017/Session-Cookie-without-Secure-flag-set/)
 - [WAF攻防实践(4)](https://mp.weixin.qq.com/s/AS1cpMqr1WkuoLmRld_p0w)
+- [实战|通过恶意 pdf 执行 xss 漏洞](https://mp.weixin.qq.com/s/D1XFNR-4qg9GUkZeyMZsyw)
+- [SVG based Stored XSS](https://prashantbhatkal2000.medium.com/svg-based-stored-xss-ee6e9b240dee)
+- [XSS With Hoisting](https://brutelogic.com.br/blog/xss-with-hoisting/)
 
 **相关案例**
 - [BugBounty:Twitter 蠕虫 XSS](https://xz.aliyun.com/t/5050)
@@ -39,7 +42,7 @@
 - [How I alert(1) in Azure DevOps](https://5alt.me/2019/02/xss-in-azure-devops/)
 - [Stored XSS to Organisation Takeover](https://infosecwriteups.com/stored-xss-to-organisation-takeover-6eaaa2fdcd5b)
 
-**工具**
+**相关工具**
 - [s0md3v/XSStrike](https://github.com/s0md3v/XSStrike) - XSS 检测工具,效果一般
     - 依赖安装
         ```bash
@@ -78,7 +81,7 @@
     - http://xssye.com/index.php
 
 - **beef**
-    - 文章
+    - 相关文章
         - [浏览器攻击框架 BeEF Part 1](https://www.freebuf.com/articles/web/175755.html)
         - [浏览器攻击框架 BeEF Part 2:初始化控制](https://www.freebuf.com/articles/web/176139.html)
         - [浏览器攻击框架 BeEF Part 3:持续控制](https://www.freebuf.com/articles/web/176550.html)
